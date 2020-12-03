@@ -38,6 +38,8 @@ dialing failed (attempts: 9): incompatible: Peer is on a different network. Got 
 
 These errors are normal, and they will be resolved once you upgrade your nodes by following the guide below.
 
+Until then, the Panacea REST API server that you are running will work only for read operations.
+
 
 ## Upgrade Procedure
 
