@@ -12,7 +12,7 @@ The following document describes the necessary steps involved that full-node ope
 
 Currently, all validator nodes are being operated by MediBloc. So, MediBloc is going to upgrade all validator nodes on `January 5, 2021 at or around 14:00 UTC` (`23:00 KST`). After that, MediBloc will provide the new `genesis.json` with all full-node operators, so that they can upgrade their nodes based on it.
 
-It will take about 2 hours conservatively to upgrade all validators. Thus, I would like to block deposits and withdrawals for about 6 hours, including the duration you upgrade your nodes and clients.
+It will take about 2 hours conservatively to upgrade all validators. Thus, I would like to ask you to block deposits and withdrawals for about 6 hours, including the duration you upgrade your nodes and clients.
 
 
 ## Major Updates 
