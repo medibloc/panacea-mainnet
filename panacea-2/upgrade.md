@@ -132,7 +132,7 @@ HTTP request formats have not  been changed. Only HTTP response formats have bee
 
 In short, there are two big changes:
 1. Anyone running signing infrastructure(wallets and exchanges) should be conscious that the type: field on StdTx will have changed from `"type":"auth/StdTx","value":...` to `"type":"cosmos-sdk/StdTx","value":...`.
-2. As mentioned in the Cosmos SDK [CHANGELOG](https://github.com/cosmos/cosmos-sdk/blob/master/CHANGELOG.md), many queries are wrapped with `height` fields now.
+2. As mentioned in the Cosmos SDK [CHANGELOG](https://github.com/cosmos/cosmos-sdk/blob/master/CHANGELOG.md), most queries are wrapped with `height` fields now.
 
 For details, please see the following sections. If you are using other APIs which are not listed in the following sections, please contact us.
 
@@ -238,6 +238,74 @@ After:
             "account_number": "10",
             ...
         }
+    }
+}
+```
+
+### GET `/bank/balances/{address}`
+
+Before:
+```json
+[
+  {
+    "denom": "umed",
+    "amount": "29990000000"
+  }
+]
+```
+After:
+```json
+{
+  "height": "840450",
+  "result": [
+    {
+      "denom": "umed",
+      "amount": "29990000000"
+    }
+  ]
+}
+```
+
+### GET `/staking/validators`
+
+Before:
+```json
+[
+    {
+       "operator_address": "..",
+        ... 
+    }
+]
+```
+After:
+```json
+{
+    "height": "123",
+    "result": [
+        {
+           "operator_address": "..",
+            ... 
+        }
+    ]
+}
+```
+
+### GET `/staking/pool`
+
+Before:
+```json
+{
+  "not_bonded_tokens": "8342091269079211",
+  "bonded_tokens": "21000000000000"
+}
+```
+After:
+```json
+{
+    "height": "123",
+    "result": {
+      "not_bonded_tokens": "8342091269079211",
+      "bonded_tokens": "21000000000000"
     }
 }
 ```
