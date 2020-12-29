@@ -189,7 +189,7 @@ After:
 }
 ```
 
-### GET `/txs?tx_height={height}`
+### GET `/txs?tx.height={height}`
 
 Before:
 ```json
