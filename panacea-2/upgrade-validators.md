@@ -23,13 +23,13 @@
 
 For using the new `--halt-height` flag which was released as `v1.2.6-internal`. Also, `v1.2.7-internal` has a bug fix regards to the genesis export.
 
-Because `v1.3.2` has the new cosmos module `did`, all nodes should be stopped at the same height, so that the genesis can be exported safely. To do that, the `--halt-height` is needed.
+Because `v1.3.3-internal` has the new cosmos module `did`, all nodes should be stopped at the same height, so that the genesis can be exported safely. To do that, the `--halt-height` is needed.
 
 The upgrade `v1.2.5-internal` -> `v1.2.7-internal` can be done without exporting the genesis.
 
 ## Steps
 
-0. If you are running validator nodes, please backup `~/.panacead/data/` to AWS S3 from one of nodes
+0. If you are running validator nodes, please backup `~/.panacead/data/` to AWS S3 from one of nodes, or take the AWS EBS snapshot.
 ```bash
 sudo systemctl stop panacealcd
 sudo systemctl stop panacead
@@ -97,7 +97,7 @@ sudo systemctl start panacealcd
 
 ## Purpose
 
-For DID operations + New `medibloc/cosmos-sdk` v0.37.15
+For DID operations + New `medibloc/cosmos-sdk` v0.37.14-internal
 
 ## Steps
 
