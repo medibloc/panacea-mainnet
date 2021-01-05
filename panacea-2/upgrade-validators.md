@@ -3,7 +3,7 @@
   * [Purpose](#purpose)
   * [Steps](#steps)
   * [Rollback Plan](#rollback-plan)
-- [Phase 2: `v1.2.7-internal` -> `v1.3.3-internal`](#phase-2-v127-internal---v132-internal)
+- [Phase 2: `v1.2.7-internal` -> `v1.3.3-internal`](#phase-2-v127-internal---v133-internal)
   * [Purpose](#purpose-1)
   * [Steps](#steps-1)
   * [Rollback Plan](#rollback-plan-1)
