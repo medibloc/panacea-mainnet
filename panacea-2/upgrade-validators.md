@@ -13,7 +13,7 @@
 
 # Intro
 
-- The upgrade height: **H** (To be decided soon).
+- The upgrade height: **29917800**
 - The upgrade procedure should be performed on `Jan. 5th, 2021 at or around 14:00 UTC`.
     - Note that there are some API breaking changes which should be followed up by service providers, such as trading companies. All service providers should prepare related changes on their side before the Mainnet upgrade. For details, please see the [Notes for Service Providers](#notes-for-service-providers).
 
@@ -29,39 +29,13 @@ The upgrade `v1.2.5-internal` -> `v1.2.7-internal` can be done without exporting
 
 ## Steps
 
-0. If you are running validator nodes, please backup `~/.panacead/data/` to AWS S3 from one of nodes, or take the AWS EBS snapshot.
+1. Stop `panacealcd` and `panacead` service
 ```bash
 sudo systemctl stop panacealcd
 sudo systemctl stop panacead
-
-cd ~/.panacead
-
-# This example uses our internal AWS S3. Please change this to your environment.
-tar czvf - data | aws s3 cp - s3://panacea-snapshot/mainnet-data-2020xxxx-v1.2.5.tar.gz
-
-sudo systemctl start panacead
-sudo systemctl start panacealcd
 ```
 
-1. Backup the old panacea binaries
-```bash
-mkdir ~/v1.2.5_bak
-cp /usr/local/bin/panacea* ~/v1.2.5_bak/
-
-cp -R ~/.panaceacli ~/v1.2.5_bak/
-
-mkdir -p ~/v1.2.5_bak/.panacead/
-cp -R ~/.panacead/config ~/v1.2.5_bak/.panacead/
-```
-
-2. Stop `panacealcd` and `panacead` service
-```bash
-# If they were already terminated at the step 0, don't need to do anything.
-sudo systemctl stop panacealcd
-sudo systemctl stop panacead
-```
-
-3. Prepare the new panacea binaries
+2. Prepare the new panacea binaries
 ```bash
 git checkout v1.2.7-internal && make install
 sudo cp ~/go/bin/panacea* /usr/local/bin/
@@ -69,24 +43,25 @@ panaceacli version --long
 panacead version --long
 ```
 
-4. Start `panacead` with `--halt-height`
+3. Start `panacead` with `--halt-height`
 Don't use `systemctl` because we need to use the `--halt-height` option and the process shouldn't be restarted automatically.
-Note that the halt height should be `H`.
+Note that the halt height should be `29917800`.
 ```bash
-panacead start --home=/home/centos/.panacead --halt-height=H
+panacead start --home=/home/centos/.panacead --halt-height=29917800
 ```
 
-5. Start the `panacealcd` service (REST API server).
+4. Start the `panacealcd` service (REST API server).
 ```bash
 sudo systemctl start panacealcd
 ```
 
 ## Rollback Plan
 
-Because `v1.2.7-internal` doesn't change any configs and data format, we can just rollback the binaries.
+Because `v1.2.7-internal` doesn't change any configs and data format, we can just rollback to `v1.2.5-internal` by switching binaries.
 
 ```bash
-sudo cp ~/v1.2.5_bak/panacea* /usr/local/bin/
+git checkout v1.2.5-internal && make install
+sudo cp ~/go/bin/panacea* /usr/local/bin/
 
 sudo systemctl start panacead
 sudo systemctl start panacealcd
@@ -97,11 +72,9 @@ sudo systemctl start panacealcd
 
 ## Purpose
 
-For DID operations + New `medibloc/cosmos-sdk` v0.37.14-internal
+For DID operations + New `medibloc/cosmos-sdk` v0.37.14-internal.
 
 ## Steps
-
-0. We don't need to backup data/configs. Let's use the backup made at the Phase 1 to reduce the downtime.
 
 1. Wait until the `panacead` process is stopped at the halt-height.
 ```bash
@@ -113,27 +86,57 @@ watch 'ps -ef | grep panacead'
 sudo systemctl stop panacealcd
 ```
 
-3. Export existing state
-Note that the halt height is `H`.
+3. Backup `config`s and `priv_validator_state.json`.
+
 ```bash
-panacead export --for-zero-height --height=H > ~/v1.2.7_genesis_export.json
+mkdir -p ~/backup/panacea-1/.panacead
+cp -R ~/.panacead/config ~/backup/panacea-1/.panacead/
+
+mkdir -p ~/backup/panacea-1/.panacead/data
+cp ~/.panacead/data/priv_validator_state.json ~/backup/panacea-1/.panacead/data
+
+cp -R ~/.panaceacli ~/backup/panacea-1/
 ```
 
-4. Prepare the new panacea binaries.
+Also, take an AWS EBS snapshot from one of validator nodes, after stopping the `panacead`.
+
+Alternatively, you can backup `~/.panacead/data/` to AWS S3 from one of validator nodes:
 ```bash
-git checkout v1.3.3-internal && make install
+sudo systemctl stop panacealcd
+sudo systemctl stop panacead
+
+cd ~/.panacead
+
+# This example uses our internal AWS S3. Please change this to your environment.
+tar czvf - data | aws s3 cp - s3://panacea-snapshot/mainnet-data-2020xxxx-v1.2.5.tar.gz
+```
+
+4. Export existing state
+Note that the halt height is `29917800`.
+```bash
+panacead export --for-zero-height --height=29917800 > ~/v1.2.7_genesis_export.json
+```
+
+5. Prepare the new panacea `v1.3.3` binaries.
+
+In the end, the `v1.3.3-internal` must be used to block `create-validator` transactions, but the `v1.3.3` needs to be used as an intermediate step because some `create-validator` transactions should be executed while starting `panacead` using the new `genesis.json` exported.
+
+```bash
+git checkout v1.3.3 && make install
 sudo cp ~/go/bin/panacea* /usr/local/bin/
 panaceacli version --long
 panacead version --long
 ```
 
-5. Migrate exported state from the current cosmos v0.35.x to the new v0.36+ version.
+6. Migrate exported state from the current cosmos v0.35.x to the new v0.36+ version.
 Note that the chain ID must be updated to the `panacea-2` to prevent the double-signing.
 ```bash
 panacead migrate v0.36 ~/v1.2.7_genesis_export.json --chain-id=panacea-2 --genesis-time=<genesis-time> > ~/v1.2.7_genesis_export_migrated.json
 ```
 
-The `<genesis-time>` should be computed relative to the blocktime of `<halt-height>`. It shall be the blocktime of `<halt-height>` + `60 mins` with the sub-seconds truncated.
+The `<genesis-time>` should be computed relative to the blocktime of `<halt-height>`. It shall be the blocktime of `<halt-height>` + `5 mins` with the sub-seconds truncated.
+
+Finally, upload the migrated genesis to Github as https://github.com/medibloc/panacea-launch/blob/master/panacea-2/genesis.json.
 
 6. Reset state.
 ```bash
@@ -153,13 +156,23 @@ vi ~/.panacead/config/config.toml
 db_backend = "goleveldb"
 ```
 
-9. Start the `panacead`
-Here, let's use the `systemctl` again, because we don't need the `--halt-height` anymore.
+9. Start the `panacead`.
+Here, we don't use `systemctl start` because we will switch it to `v1.3.3-internal` in the end.
+Start all nodes (validators + non-validators) by the following command, and stop them after they are synced each other successfully.
 ```bash
-sudo systemctl start panacead
+panacead start
 ```
 
-10. Modify the chain-id for `panacealcd`.
+10. Prepare the new panacea `v1.3.3-internal` binaries.
+
+```bash
+git checkout v1.3.3-internal && make install
+sudo cp ~/go/bin/panacea* /usr/local/bin/
+panaceacli version --long
+panacead version --long
+```
+
+11. Modify the chain-id for `panacealcd`.
 ```bash
 vi ~/.panaceacli/config/config.toml
 
@@ -172,9 +185,10 @@ sudo vim /etc/systemd/system/panacealcd.service
 ExecStart=/usr/local/bin/panaceacli .... --chain-id panacea-2
 ```
 
-11. Start the `panacealcd` (REST API server).
+12. Start services
 
 ```bash
+sudo systemctl start panacead
 sudo systemctl start panacealcd
 ```
 
@@ -182,20 +196,31 @@ sudo systemctl start panacealcd
 
 Because `v1.3.3-internal` will change some configs and data format, we should rollback with the data backed up at the Phase 1.
 ```bash
+sudo systemctl stop panacead
+sudo systemctl stop panacealcd
+
+rm -rf ~/.panacead/data
 cd ~/.panacead
 s3 cp s3://panacea-snapshot/mainnet-data-2020xxxx-v1.2.5.tar.gz - | tar -xzv
 
 rm -rf ~/.panaceacli
-cp -R ~/v1.2.5_bak/.panaceacli ~
+cp -R ~/backup/panacea-1/.panaceacli ~/
 
 rm -rf ~/.panacead/config
-cp -R ~/v1.2.5_bak/.panacead/config ~/.panacead/
+cp -R ~/backup/panacea-1/.panacead/config ~/.panacead/
 
-sudo cp ~/v1.2.5_bak/panacea* /usr/local/bin/
+git checkout v1.2.5-internal && make install
+sudo cp ~/go/bin/panacea* /usr/local/bin/
+
+sudo systemctl start panacead
+sudo systemctl start panacealcd
 ```
 
-- [Notes for Service Providers](#notes-for-service-providers)
+
+# [Notes for Service Providers](#notes-for-service-providers)
+
 https://github.com/medibloc/panacea-launch/blob/master/panacea-2/upgrade.md#notes-for-service-providers
+
 
 # Reference
 https://github.com/cosmos/gaia/blob/master/docs/migration/cosmoshub-2.md
