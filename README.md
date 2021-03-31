@@ -5,7 +5,7 @@ This repository contains the configuration parameters and genesis.json file for 
 
 Check Panacea Core code [here](https://github.com/medibloc/panacea-core).
 
-## Nodes
+## Persistent Peers
 
 ```
 - 8c41cc8a6fc59f05138ae6c16a9eec05d601ef71@13.209.177.91:26656
