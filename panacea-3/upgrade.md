@@ -1,7 +1,7 @@
 # `panacea-3` Upgrade Instructions (for non-validators)
 
 
-## Abstraction
+## Abstract
 
 - From [v1.3.3](https://github.com/medibloc/panacea-core/releases/tag/v1.3.3) to v1.3.4 (TO BE RELEASE SOON)
 	- New features that support more DID Document properties
