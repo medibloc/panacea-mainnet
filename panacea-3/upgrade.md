@@ -4,7 +4,7 @@ The following document describes the necessary steps involved that validators an
 full node operators must take in order to upgrade from `panacea-2` to `panacea-3`.
 
 Currently, all validator nodes are being operated by MediBloc.
-So, MediBloc is going to upgrade all validator nodes on `August 10, 2021 at 04:00 UTC (13:00 KST)`.
+So, MediBloc is going to upgrade all validator nodes on `August 11, 2021 at 04:00 UTC (13:00 KST)`.
 After that, MediBloc will post an official `panacea-3` genesis file to the [panacea-launch](https://github.com/medibloc/panacea-launch/panacea-3/genesis.json) GitHub repo,
 so that full node operators can upgrade their nodes based on it.
 
