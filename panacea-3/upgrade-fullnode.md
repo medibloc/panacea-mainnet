@@ -57,7 +57,7 @@ swagger = true
 The `swagger` setting refers to enabling/disabling Swagger docs via the `/swagger/` API endpoint.
 
 Alternatively, you can also enable a gRPC server which is more recommended than the REST server.
-```
+```toml
 [grpc]
 # Enable defines if the gRPC server should be enabled.
 enable = true
