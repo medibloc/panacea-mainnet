@@ -41,4 +41,6 @@ If you want to use Panacea-specific transactions such as AOL or DID, please use 
 
 ## For REST API users
 
+Panacea provides the Cosmos REST API as it is.
+However, numerous breaking changes have been made in the Cosmos REST API.
 Please refer to the [Migrating to New REST Endpoints](https://docs.cosmos.network/v0.42/migrations/rest.html#migrating-to-new-rest-endpoints) guide of the Cosmos SDK.
