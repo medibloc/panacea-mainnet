@@ -1,5 +1,10 @@
 # Guidance for Validators
 
+**NOTE**:
+Currently, all validator nodes are operated by MediBloc. So, this guide is only for MediBloc engineers.
+If you are a full node operator, please see the [Guidance for Full Node Operators](upgrade-fullnode.md).
+
+
 ## Risks
 
 As a validator, performing the upgrade procedure on your consensus nodes carries a heightened risk of double-signing and being slashed.
@@ -17,16 +22,17 @@ Snapshotting depends heavily on infrastructure, but this can be done generally b
 
 It is critically important to back up the `~/.panacead/data/priv_validator_state.json` file after stopping your `panacead` process.
 This file is updated every block as your validator participates in a consensus round.
-It is a critical file needed to prevent double-signing, in case the upgrade fails and the previous chain needfs to be restarted.
+It is a critical file needed to prevent double-signing, in case the upgrade fails and the previous chain needs to be restarted.
 
-In the event that the upgrade does not succeed, validators and full node operators must downgrade back to `panacea-2` (Panacea v1.3.3)
+In the event that the upgrade does not succeed, validators and full node operators must downgrade back to `panacea-2` (Panacea v1.3.3-internal)
 and restore to their latest snapshot before restarting their nodes.
 
 ## Upgrade Procedure
 
 **NOTE**: It is assumed that you are currently operating a validator node running Panacea v1.3.3-internal with the Cosmos SDK v0.37.14.
 
-- The commit hash of Panacea v2.0.0: TODO: to be described
+- The commit hash of Panacea v2.0.0: To be described
+   - [v2.0.0-alpha1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0-alpha.1) temporarily: `d771b7b826e3e396222016ec1d2367e51bc79024`
 - The height will be reset to 0 after the upgrade. All data will be preserved.
 
 1. Verify that you are currently running the correct version (v1.3.3-internal) of `panacead`.
@@ -42,7 +48,8 @@ build_tags: ' ledger'
 go: go version go1.15.6 linux/amd64
 ```
 
-2. Restart the `panacead` process with the `--halt-height=<H>` option. TODO: `<H>` to be described.
+2. Restart the `panacead` process with the `--halt-height=<H>` option. `<H>` to be described by MediBloc soon.
+   If you are running multiple validator nodes, please perform a rolling restart to minimize risks.
 ```bash
 sudo systemctl stop panacead
 
@@ -76,11 +83,11 @@ tar cvzf - data | aws s3 cp - s3://panacea-snapshot/panacea-2-2021xxxx-v1.3.3.ta
 panacead export --for-zero-height --height=<H> > ~/panacea-2-export.json
 ```
 
-5. Prepare the new Panacea v2.0.0 binary.
+5. Prepare the new Panacea v2.0.0-alpha.1 binary.
 ```bash
 git clone https://github.com/medibloc/panacea-core
 cd panacea-core
-git checkout v2.0.0
+git checkout v2.0.0-alpha.1
 make install
 
 panacead version --long
@@ -92,25 +99,28 @@ panacead version --long
 panacead migrate ~/panacea-2-export.json --chain-id panacea-3 > ~/panacea-3-genesis.json
 ```
 
-7. Verify that the SHA-256 hash of the migrated file is the same as the hash of the genesis file
+7. Change staking-related parameters as discussed so far.
+   TODO: add a link, or this step can be integrated within the `panacead migrate` command.
+
+8. Verify that the SHA-256 hash of the migrated file is the same as the hash of the genesis file
    on the [panacea-launch](https://github.com/medibloc/panacea-launch/panacea-3/genesis.json) GitHub.
 ```bash
 jq -S -c -M '' ~/panacea-3-genesis.json | shasum -a 256
 ```
 
-8. Rename the config directory and reset state.
+9. Rename the config directory and reset state.
 ```bash
 mv ~/.panacead ~/.panacea
 
 panacead unsafe-reset-all
 ```
 
-9. Move the new genesis file to the config directory.
+10. Move the new genesis file to the config directory.
 ```bash
 cp ~/panacea-3-genesis.json ~/.panacea/config/genesis.json
 ```
 
-10. Start the daemon
+11. Start the daemon
 ```bash
 panacead start
 # or, sudo systemctl start panacead
