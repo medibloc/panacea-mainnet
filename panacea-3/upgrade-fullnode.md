@@ -1,7 +1,7 @@
 # Guidance for Full Node Operators
 
 - The commit hash of Panacea v2.0.0: TODO: to be described
-  - [v2.0.0-alpha1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0-alpha.1) temporarily: `d771b7b826e3e396222016ec1d2367e51bc79024`
+  - [v2.0.0-alpha.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0-alpha.1) temporarily: `d771b7b826e3e396222016ec1d2367e51bc79024`
 - The height will be reset to 0 after the upgrade. All data will be preserved.
 
 1. Verify that you are currently running the correct version (v1.3.3) of `panacead`.

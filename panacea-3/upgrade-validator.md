@@ -32,7 +32,7 @@ and restore to their latest snapshot before restarting their nodes.
 **NOTE**: It is assumed that you are currently operating a validator node running Panacea v1.3.3-internal with the Cosmos SDK v0.37.14.
 
 - The commit hash of Panacea v2.0.0: To be described
-   - [v2.0.0-alpha1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0-alpha.1) temporarily: `d771b7b826e3e396222016ec1d2367e51bc79024`
+   - [v2.0.0-alpha.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0-alpha.1) temporarily: `d771b7b826e3e396222016ec1d2367e51bc79024`
 - The height will be reset to 0 after the upgrade. All data will be preserved.
 
 1. Verify that you are currently running the correct version (v1.3.3-internal) of `panacead`.
