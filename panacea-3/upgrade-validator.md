@@ -94,9 +94,21 @@ panacead version --long
 ```
 
 6. Migrate the exported state to the genesis file which is compatible with the new Panacea version.
+
+Unfortunately, the `panacead migrate` command doesn't handle Tendermint consensus parameters. You need to update these parameters manually.
 ```bash
-# TODO: to be described
-panacead migrate ~/panacea-2-export.json --chain-id panacea-3 > ~/panacea-3-genesis.json
+cat ~/panacea-2-export.json | \
+  jq -c '.consensus_params.evidence.max_age_duration = "1814400000000000"' | \
+  jq -c '.consensus_params.evidence.max_age_num_blocks = "1814400"' | \
+  jq -c '.consensus_params.evidence.max_bytes = "50000"' | \
+  jq -c 'del(.consensus_params.evidence.max_age)' | \
+  jq > ~/panacea-2-export-manually-migrated.json
+```
+Then, you can run `panacead migrate` commands.
+```bash
+panacead migrate v0.38 ~/panacea-2-export-manually-migrated.json --chain-id panacea-3 | jq > ~/genesis.38.json
+panacead migrate v0.39 ~/genesis.38.json --chain-id panacea-3 | jq > ~/genesis.39.json
+panacead migrate v0.40 ~/genesis.39.json --chain-id panacea-3 | jq > ~/genesis.40.json
 ```
 
 7. Change staking-related parameters as discussed so far.
@@ -108,16 +120,18 @@ panacead migrate ~/panacea-2-export.json --chain-id panacea-3 > ~/panacea-3-gene
 jq -S -c -M '' ~/panacea-3-genesis.json | shasum -a 256
 ```
 
-9. Rename the config directory and reset state.
+9. Create a new `~/.panacea` directory and copy previous config files.
 ```bash
-mv ~/.panacead ~/.panacea
+MONIKER=$(grep "^moniker = " ~/panacea-2-backup/.panacead/config/config.toml | awk '{print $3}' | sed 's|"||g')
+panacead init ${MONIKER} --chain-id panacea-3
 
-panacead unsafe-reset-all
+cp ~/panacea-2-backup/.panacead/config/priv_validator_key.json ~/.panacea/config/
+cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
 ```
 
 10. Move the new genesis file to the config directory.
 ```bash
-cp ~/panacea-3-genesis.json ~/.panacea/config/genesis.json
+cp ~/panacea.40.json ~/.panacea/config/genesis.json
 ```
 
 11. Start the daemon
