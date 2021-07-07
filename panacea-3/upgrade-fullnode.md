@@ -30,11 +30,17 @@ make install
 panacead version --long
 ```
 
-5. Rename the config directory and reset state.
+5. Create a new `~/.panacea` directory and copy previous config files.
 ```bash
-mv ~/.panacead ~/.panacea
+MONIKER=$(grep "^moniker = " ~/panacea-2-backup/.panacead/config/config.toml | awk '{print $3}' | sed 's|"||g')
+panacead init ${MONIKER} --chain-id panacea-3
 
-panacead unsafe-reset-all
+cp ~/panacea-2-backup/.panacead/config/priv_validator_key.json ~/.panacea/config/
+cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
+
+# Copy some parameters manually the previous config files (because new config files contain many new parameters).
+vimdiff ~/panacea-2-backup/.panacead/config/config.toml ~/.panacea/config/config.toml
+vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
 ```
 
 6. Download the new `genesis.json`.

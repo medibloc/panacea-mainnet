@@ -127,6 +127,10 @@ panacead init ${MONIKER} --chain-id panacea-3
 
 cp ~/panacea-2-backup/.panacead/config/priv_validator_key.json ~/.panacea/config/
 cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
+
+# Copy some parameters manually the previous config files (because new config files contain many new parameters).
+vimdiff ~/panacea-2-backup/.panacead/config/config.toml ~/.panacea/config/config.toml
+vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
 ```
 
 10. Move the new genesis file to the config directory.
