@@ -18,7 +18,17 @@ pkill panaceacli
 pkill panacead
 ```
 
-3. Back up your `~/.panacead` directory
+3. Back up your `~/.panacead` and `~/.panaceacli` directories.
+
+Note that the new Panacea v2.0 will use only one home directory: `~/.panacea`.
+So, the `~/.panacead` and `~/.panaceacli` are not used anymore.
+```bash
+mkdir -p ~/panacea-2-backup
+mv ~/.panacead ~/panacea-2-backup/
+mv ~/.panaceacli ~/panacea-2-backup/
+```
+
+For safety, it is also recommended to back up those directories to your cloud or external devices.
 
 4. Install the Panacea v2.0.0-alpha.1.
 ```bash
@@ -30,11 +40,19 @@ make install
 panacead version --long
 ```
 
-5. Rename the config directory and reset state.
+5. Create a new `~/.panacea` directory and copy parameters from previous config files.
 ```bash
-mv ~/.panacead ~/.panacea
+# Get your node's moniker from the previous 'config.toml'.
+MONIKER=$(grep "^moniker = " ~/panacea-2-backup/.panacead/config/config.toml | awk '{print $3}' | sed 's|"||g')
+panacead init ${MONIKER} --chain-id panacea-3
 
-panacead unsafe-reset-all
+cp ~/panacea-2-backup/.panacead/config/priv_validator_key.json ~/.panacea/config/
+cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
+
+# Copy some parameters manually from previous config files
+# Don't copy entire files, because new config files already contain some parameters that are newly introduced.
+vimdiff ~/panacea-2-backup/.panacead/config/config.toml ~/.panacea/config/config.toml
+vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
 ```
 
 6. Download the new `genesis.json`.

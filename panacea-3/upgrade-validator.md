@@ -57,25 +57,21 @@ sudo systemctl stop panacead
 panacead start --halt-height=<H> 
 ```
 
-3. After the chain is halted, make a backup of your `~/.panacead` directory.
+3. After the chain is halted, make a backup of your `~/.panacead` and `~/.panaceacli` directories.
 
-Small files can be backed up by the following:
+Note that the new Panacea v2.0 will use only one home directory: `~/.panacea`.
+So, the `~/.panacead` and `~/.panaceacli` are not used anymore.
 ```bash
-mkdir -p ~/panacea-2-backup/.panacead
-cp -R ~/.panacead/config ~/panacea-2-backup/.panacead/
-
-mkdir -p ~/panacea-2-backup/.panacead/data
-cp -R ~/.panacead/data/priv_validator_state.json ~/panacea-2-backup/.panacead/data/
-
-cp -R ~/.panaceacli ~/panacea-2-backup/
+mkdir -p ~/panacea-2-backup
+mv ~/.panacead ~/panacea-2-backup/
+mv ~/.panaceacli ~/panacea-2-backup/
 ```
 
-For big data files in the `~/.panacead/data/`, take an AWS EBS snapshot if your node is on AWS.
-
-Alternatively, you can backup ~/.panacead/data/` to AWS S3:
+For safety, it is also recommended to back up those directories to your cloud or external devices.
+For instance, you can take an AWS EBS snapshot if your node is on AWS.
+Alternatively, you can backup directories to AWS S3.
 ```bash
-cd ~/.panacead
-tar cvzf - data | aws s3 cp - s3://panacea-snapshot/panacea-2-2021xxxx-v1.3.3.tar.gz
+tar cvzf - ~/.panacead | aws s3 cp - s3://panacea-snapshot/panacea-2-2021xxxx-v1.3.3.tar.gz
 ```
 
 4. Export state.
@@ -94,9 +90,21 @@ panacead version --long
 ```
 
 6. Migrate the exported state to the genesis file which is compatible with the new Panacea version.
+
+Unfortunately, the `panacead migrate` command doesn't handle Tendermint consensus parameters. You need to update these parameters manually.
 ```bash
-# TODO: to be described
-panacead migrate ~/panacea-2-export.json --chain-id panacea-3 > ~/panacea-3-genesis.json
+cat ~/panacea-2-export.json | \
+  jq -c '.consensus_params.evidence.max_age_duration = "1814400000000000"' | \
+  jq -c '.consensus_params.evidence.max_age_num_blocks = "1814400"' | \
+  jq -c '.consensus_params.evidence.max_bytes = "50000"' | \
+  jq -c 'del(.consensus_params.evidence.max_age)' | \
+  jq > ~/panacea-2-export-manually-migrated.json
+```
+Then, you can run `panacead migrate` commands.
+```bash
+panacead migrate v0.38 ~/panacea-2-export-manually-migrated.json --chain-id panacea-3 | jq > ~/genesis.38.json
+panacead migrate v0.39 ~/genesis.38.json --chain-id panacea-3 | jq > ~/genesis.39.json
+panacead migrate v0.40 ~/genesis.39.json --chain-id panacea-3 | jq > ~/genesis.40.json
 ```
 
 7. Change staking-related parameters as discussed so far.
@@ -108,16 +116,24 @@ panacead migrate ~/panacea-2-export.json --chain-id panacea-3 > ~/panacea-3-gene
 jq -S -c -M '' ~/panacea-3-genesis.json | shasum -a 256
 ```
 
-9. Rename the config directory and reset state.
+9. Create a new `~/.panacea` directory and copy previous config files.
 ```bash
-mv ~/.panacead ~/.panacea
+# Get your node's moniker from the previous 'config.toml'.
+MONIKER=$(grep "^moniker = " ~/panacea-2-backup/.panacead/config/config.toml | awk '{print $3}' | sed 's|"||g')
+panacead init ${MONIKER} --chain-id panacea-3
 
-panacead unsafe-reset-all
+cp ~/panacea-2-backup/.panacead/config/priv_validator_key.json ~/.panacea/config/
+cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
+
+# Copy some parameters manually from previous config files
+# Don't copy entire files, because new config files already contain some parameters that are newly introduced.
+vimdiff ~/panacea-2-backup/.panacead/config/config.toml ~/.panacea/config/config.toml
+vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
 ```
 
 10. Move the new genesis file to the config directory.
 ```bash
-cp ~/panacea-3-genesis.json ~/.panacea/config/genesis.json
+cp ~/panacea.40.json ~/.panacea/config/genesis.json
 ```
 
 11. Start the daemon
