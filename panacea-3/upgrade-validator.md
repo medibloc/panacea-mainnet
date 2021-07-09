@@ -57,25 +57,21 @@ sudo systemctl stop panacead
 panacead start --halt-height=<H> 
 ```
 
-3. After the chain is halted, make a backup of your `~/.panacead` directory.
+3. After the chain is halted, make a backup of your `~/.panacead` and `~/.panaceacli` directories.
 
-Small files can be backed up by the following:
+Note that the new Panacea v2.0 will use only one home directory: `~/.panacea`.
+So, the `~/.panacead` and `~/.panaceacli` are not used anymore.
 ```bash
-mkdir -p ~/panacea-2-backup/.panacead
-cp -R ~/.panacead/config ~/panacea-2-backup/.panacead/
-
-mkdir -p ~/panacea-2-backup/.panacead/data
-cp -R ~/.panacead/data/priv_validator_state.json ~/panacea-2-backup/.panacead/data/
-
-cp -R ~/.panaceacli ~/panacea-2-backup/
+mkdir -p ~/panacea-2-backup
+mv ~/.panacead ~/panacea-2-backup/
+mv ~/.panaceacli ~/panacea-2-backup/
 ```
 
-For big data files in the `~/.panacead/data/`, take an AWS EBS snapshot if your node is on AWS.
-
-Alternatively, you can backup ~/.panacead/data/` to AWS S3:
+For safety, it is also recommended to back up those directories to your cloud or external devices.
+For instance, you can take an AWS EBS snapshot if your node is on AWS.
+Alternatively, you can backup directories to AWS S3.
 ```bash
-cd ~/.panacead
-tar cvzf - data | aws s3 cp - s3://panacea-snapshot/panacea-2-2021xxxx-v1.3.3.tar.gz
+tar cvzf - ~/.panacead | aws s3 cp - s3://panacea-snapshot/panacea-2-2021xxxx-v1.3.3.tar.gz
 ```
 
 4. Export state.
@@ -122,13 +118,15 @@ jq -S -c -M '' ~/panacea-3-genesis.json | shasum -a 256
 
 9. Create a new `~/.panacea` directory and copy previous config files.
 ```bash
+# Get your node's moniker from the previous 'config.toml'.
 MONIKER=$(grep "^moniker = " ~/panacea-2-backup/.panacead/config/config.toml | awk '{print $3}' | sed 's|"||g')
 panacead init ${MONIKER} --chain-id panacea-3
 
 cp ~/panacea-2-backup/.panacead/config/priv_validator_key.json ~/.panacea/config/
 cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
 
-# Copy some parameters manually the previous config files (because new config files contain many new parameters).
+# Copy some parameters manually from previous config files
+# Don't copy entire files, because new config files already contain some parameters that are newly introduced.
 vimdiff ~/panacea-2-backup/.panacead/config/config.toml ~/.panacea/config/config.toml
 vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
 ```
