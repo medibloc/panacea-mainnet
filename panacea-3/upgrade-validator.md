@@ -116,6 +116,32 @@ cat ~/genesis.40.json | \
   jq -c '.app_state.mint.params.inflation_max = "0.100000000000000000"' | \
   jq -c '.app_state.mint.params.inflation_rate_change = "0.030000000000000000"' | \
   jq -c '.app_state.slashing.params.slash_fraction_downtime = "0.000100000000000000"' | \
+  jq -c '.app_state.ibc.client_genesis.clients = []' | \
+  jq -c '.app_state.ibc.client_genesis.clients_consensus = []' | \
+  jq -c '.app_state.ibc.client_genesis.create_localhost = false' | \
+  jq -c '.app_state.ibc.connection_genesis.connections = []' | \
+  jq -c '.app_state.ibc.connection_genesis.client_connection_paths = []' | \
+  jq -c '.app_state.ibc.channel_genesis.channels = []' | \
+  jq -c '.app_state.ibc.channel_genesis.acknowledgements = []' | \
+  jq -c '.app_state.ibc.channel_genesis.commitments = []' | \
+  jq -c '.app_state.ibc.channel_genesis.receipts = []' | \
+  jq -c '.app_state.ibc.channel_genesis.send_sequences = []' | \
+  jq -c '.app_state.ibc.channel_genesis.recv_sequences = []' | \
+  jq -c '.app_state.ibc.channel_genesis.ack_sequences = []' | \
+  jq -c '.app_state.transfer.port_id = "transfer"' | \
+  jq -c '.app_state.transfer.denom_traces = []' | \
+  jq -c '.app_state.transfer.params.send_enabled = true' | \
+  jq -c '.app_state.transfer.params.receive_enabled = true' | \
+  jq -c '.app_state.capability.index = "1"' | \
+  jq -c '.app_state.capability.owners = []' | \
+  jq -c '.app_state.wasm.codes = []' | \
+  jq -c '.app_state.wasm.contracts = []' | \
+  jq -c '.app_state.wasm.gen_msgs = []' | \
+  jq -c '.app_state.wasm.params.code_upload_access.address = ""' | \
+  jq -c '.app_state.wasm.params.code_upload_access.permission = "Everybody"' | \
+  jq -c '.app_state.wasm.params.instantiate_default_permission = "Everybody"' | \
+  jq -c '.app_state.wasm.params.max_wasm_code_size = "614400"' | \
+  jq -c '.app_state.wasm.sequences += [{"id_key":"BGxhc3RDb2RlSWQ=","value":"1"},{"id_key":"BGxhc3RDb250cmFjdElk","value":"1"}]' | \
   jq > ~/genesis.panacea-3.json
 ````
 
