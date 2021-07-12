@@ -107,13 +107,22 @@ panacead migrate v0.39 ~/genesis.38.json --chain-id panacea-3 | jq > ~/genesis.3
 panacead migrate v0.40 ~/genesis.39.json --chain-id panacea-3 | jq > ~/genesis.40.json
 ```
 
-7. Change staking-related parameters as discussed so far.
-   TODO: add a link, or this step can be integrated within the `panacead migrate` command.
+7. Change validator-related parameters as discussed so far.
+```bash
+cat ~/genesis.40.json | \
+  jq -c '.app_state.staking.params.max_validators = 50' | \
+  jq -c '.app_state.mint.minter.inflation = "0.070000000000000000"' | \
+  jq -c '.app_state.mint.params.inflation_min = "0.070000000000000000"' | \
+  jq -c '.app_state.mint.params.inflation_max = "0.100000000000000000"' | \
+  jq -c '.app_state.mint.params.inflation_rate_change = "0.030000000000000000"' | \
+  jq -c '.app_state.slashing.params.slash_fraction_downtime = "0.000100000000000000"' | \
+  jq > ~/genesis.panacea-3.json
+````
 
 8. Verify that the SHA-256 hash of the migrated file is the same as the hash of the genesis file
    on the [panacea-launch](https://github.com/medibloc/panacea-launch/panacea-3/genesis.json) GitHub.
 ```bash
-jq -S -c -M '' ~/panacea-3-genesis.json | shasum -a 256
+jq -S -c -M '' ~/genesis.panacea-3.json | shasum -a 256
 ```
 
 9. Create a new `~/.panacea` directory and copy previous config files.
@@ -127,13 +136,15 @@ cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
 
 # Copy some parameters manually from previous config files
 # Don't copy entire files, because new config files already contain some parameters that are newly introduced.
+#
+# NOTE: Make sure that timeout_commit = "1s"
 vimdiff ~/panacea-2-backup/.panacead/config/config.toml ~/.panacea/config/config.toml
 vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
 ```
 
 10. Move the new genesis file to the config directory.
 ```bash
-cp ~/panacea.40.json ~/.panacea/config/genesis.json
+cp ~/genesis.panacea-3.json ~/.panacea/config/genesis.json
 ```
 
 11. Start the daemon
