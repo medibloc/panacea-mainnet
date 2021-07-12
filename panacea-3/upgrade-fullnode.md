@@ -51,6 +51,8 @@ cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
 
 # Copy some parameters manually from previous config files
 # Don't copy entire files, because new config files already contain some parameters that are newly introduced.
+#
+# NOTE: Make sure that timeout_commit = "1s"
 vimdiff ~/panacea-2-backup/.panacead/config/config.toml ~/.panacea/config/config.toml
 vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
 ```
