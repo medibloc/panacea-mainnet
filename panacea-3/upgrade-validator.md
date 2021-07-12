@@ -125,12 +125,7 @@ cat ~/genesis.40.json | \
 jq -S -c -M '' ~/genesis.panacea-3.json | shasum -a 256
 ```
 
-9. Move the new genesis file to the config directory.
-```bash
-cp ~/genesis.panacea-3.json ~/.panacea/config/genesis.json
-```
-
-10. Create a new `~/.panacea` directory and copy previous config files.
+9. Create a new `~/.panacea` directory and copy previous config files.
 ```bash
 # Get your node's moniker from the previous 'config.toml'.
 MONIKER=$(grep "^moniker = " ~/panacea-2-backup/.panacead/config/config.toml | awk '{print $3}' | sed 's|"||g')
@@ -145,6 +140,11 @@ cp ~/panacea-2-backup/.panacead/config/node_key.json ~/.panacea/config/
 # NOTE: Make sure that timeout_commit = "1s"
 vimdiff ~/panacea-2-backup/.panacead/config/config.toml ~/.panacea/config/config.toml
 vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
+```
+
+10. Move the new genesis file to the config directory.
+```bash
+cp ~/genesis.panacea-3.json ~/.panacea/config/genesis.json
 ```
 
 11. Start the daemon
