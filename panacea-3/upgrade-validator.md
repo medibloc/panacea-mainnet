@@ -107,7 +107,7 @@ panacead migrate v0.39 ~/genesis.38.json --chain-id panacea-3 | jq > ~/genesis.3
 panacead migrate v0.40 ~/genesis.39.json --chain-id panacea-3 | jq > ~/genesis.40.json
 ```
 
-7. Change validator-related parameters as discussed so far.
+7. Change validator-related parameters and new parameters for IBC and Wasm.
 ```bash
 cat ~/genesis.40.json | \
   jq -c '.app_state.staking.params.max_validators = 50' | \
