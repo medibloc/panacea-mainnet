@@ -15,8 +15,8 @@ The upgrade will be a hard-fork that the chain ID is changed from `panacea-2` to
 
 |Chain ID|`panacea-2`|`panacea-3`|
 |--------|-----------|-----------|
-|Panacea|[v1.3.3](https://github.com/medibloc/panacea-core/releases/tag/v1.3.3)|v2.0.0 will be released. ([v2.0.0-alpha.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0-alpha.1) temporarily)|
-|Cosmos SDK|[v0.37.14](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.37.14)|[v0.42.6](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.42.6)|
+|Panacea|[v1.3.3](https://github.com/medibloc/panacea-core/releases/tag/v1.3.3)|[v2.0.0](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0)|
+|Cosmos SDK|[v0.37.14](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.37.14)|[v0.42.7](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.42.7)|
 |Tendermint|[v0.32.13](https://github.com/tendermint/tendermint/releases/tag/v0.32.13)|[v0.34.11](https://github.com/tendermint/tendermint/releases/tag/v0.34.11)|
 
 Specific instructions for validators are available in [Guidance for Validators](upgrade-validator.md),

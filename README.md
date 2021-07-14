@@ -1,5 +1,4 @@
 # MediBloc - Panacea Launch
-![banner](banner.png)
 
 This repository contains the configuration parameters and genesis.json file for the Panacea blockchain.
 

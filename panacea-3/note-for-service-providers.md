@@ -1,14 +1,13 @@
 # Note for Service Providers
 
-There are an unusual amount of API breakage between the Cosmos SDK `v0.37.14` and `v0.42.6`.
+There are an unusual amount of API breakage between the Cosmos SDK `v0.37.14` and `v0.42.7`.
 Because Panacea is based on Cosmos SDK, the service providers should update their source code
 according to the new Cosmos SDK REST API or Panacea client SDKs.
 
 
 ## For Java SDK users
 
-The [panacea-java](https://github.com/medibloc/panacea-java) v2.0.0 will be released soon.
-Until then, please use [v2.0.0-alpha.1](https://github.com/medibloc/panacea-java/releases/tag/v2.0.0-alpha.1).
+The `panacea-java` [v2.0.0](https://github.com/medibloc/panacea-java/releases/tag/v2.0.0) has been released.
 
 The SDK interface has been changed because the underlying Cosmos SDK contains many breaking changes including the protocol migration from Amino to Protobuf.
 But, we have tried to design the new SDK interface as similar as possible to the previous one.

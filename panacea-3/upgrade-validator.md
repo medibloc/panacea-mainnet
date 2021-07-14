@@ -31,8 +31,7 @@ and restore to their latest snapshot before restarting their nodes.
 
 **NOTE**: It is assumed that you are currently operating a validator node running Panacea v1.3.3-internal with the Cosmos SDK v0.37.14.
 
-- The commit hash of Panacea v2.0.0: To be described
-   - [v2.0.0-alpha.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0-alpha.1) temporarily: `d771b7b826e3e396222016ec1d2367e51bc79024`
+- The commit hash of Panacea [v2.0.0](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0): `fba1c1c6a14e9c1ff7853094ac8665feea82a41e`
 - The height will be reset to 0 after the upgrade. All data will be preserved.
 
 1. Verify that you are currently running the correct version (v1.3.3-internal) of `panacead`.
@@ -76,14 +75,14 @@ tar cvzf - ~/.panacead | aws s3 cp - s3://panacea-snapshot/panacea-2-2021xxxx-v1
 
 4. Export state.
 ```bash
-panacead export --for-zero-height --height=<H> > ~/panacea-2-export.json
+panacead export --home=$HOME/panacea-2-backup/.panacead --for-zero-height --height=<H> > ~/panacea-2-export.json
 ```
 
-5. Prepare the new Panacea v2.0.0-alpha.1 binary.
+5. Prepare the new Panacea v2.0.0 binary.
 ```bash
 git clone https://github.com/medibloc/panacea-core
 cd panacea-core
-git checkout v2.0.0-alpha.1
+git checkout v2.0.0
 make install
 
 panacead version --long
