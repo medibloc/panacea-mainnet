@@ -12,7 +12,8 @@ The `panacea-java` [v2.0.0](https://github.com/medibloc/panacea-java/releases/ta
 The SDK interface has been changed because the underlying Cosmos SDK contains many breaking changes including the protocol migration from Amino to Protobuf.
 But, we have tried to design the new SDK interface as similar as possible to the previous one.
 
-Please refer to the [examples](https://github.com/medibloc/panacea-java#feature).
+Whereas the previous `panacea-java` v1.x communicates with the Panacea REST API, the v2.x communicates with the [Panacea gRPC endpoint](https://docs.cosmos.network/master/run-node/interact-node.html#using-grpc) (default port: `9090`). 
+For more details, please refer to the [examples](https://github.com/medibloc/panacea-java#feature).
 
 
 ## For Javascript SDK users
@@ -37,9 +38,11 @@ const [firstAccount] = await wallet.getAccounts();
 
 If you want to use Panacea-specific transactions such as AOL or DID, please use the [panacea-js](https://github.com/medibloc/panacea-js) which wraps CosmJS.
 
+Whereas the previous `panacea-js` v1.x communicates with the Panacea REST API, but the v2.x communicates with the [Tendermint RPC endpoint](https://docs.cosmos.network/master/core/grpc_rest.html#tendermint-rpc) (default port: `26657`).
+
 
 ## For REST API users
 
-Panacea provides the Cosmos REST API as it is.
+Panacea provides the [Cosmos REST API](https://docs.cosmos.network/master/run-node/interact-node.html#using-the-rest-endpoints) as it is (default port: `1317`).
 However, numerous breaking changes have been made in the Cosmos REST API.
 Please refer to the [Migrating to New REST Endpoints](https://docs.cosmos.network/v0.42/migrations/rest.html#migrating-to-new-rest-endpoints) guide of the Cosmos SDK.
