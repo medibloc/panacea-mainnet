@@ -1,6 +1,6 @@
 # Guidance for Full Node Operators
 
-- The commit hash of Panacea [v2.0.0](https://github.com/medibloc/panacea-core/releases/tag/v2.0.0): `fba1c1c6a14e9c1ff7853094ac8665feea82a41e`
+- The commit hash of Panacea [v2.0.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.1): `b36d1dac432c75a6d865e75767fe227a4ca125ca`
 - The height will be reset to 0 after the upgrade. All data will be preserved.
 
 1. Verify that you are currently running the correct version (v1.3.3) of `panacead`.
@@ -29,11 +29,11 @@ mv ~/.panaceacli ~/panacea-2-backup/
 
 For safety, it is also recommended to back up those directories to your cloud or external devices.
 
-4. Install the Panacea v2.0.0.
+4. Install the Panacea v2.0.1.
 ```bash
 git clone https://github.com/medibloc/panacea-core
 cd panacea-core
-git checkout v2.0.0
+git checkout v2.0.1
 make install
 
 panacead version --long
