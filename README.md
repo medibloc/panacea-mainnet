@@ -5,9 +5,9 @@ This repo contains genesis files of all historical chains of the Panacea Mainnet
 
 ## Intro
 
-- Version: Panacea Core [v1.3.3](https://github.com/medibloc/panacea-core/releases/tag/v1.3.3)
-- Chain ID: `panacea-2`
-- Genesis file: https://github.com/medibloc/panacea-mainnet/raw/master/panacea-2/genesis.json
+- Version: Panacea Core [v2.0.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.1)
+- Chain ID: `panacea-3`
+- Genesis file: https://github.com/medibloc/panacea-mainnet/raw/master/panacea-3/genesis.json.gz
 
 
 ## Seed Nodes

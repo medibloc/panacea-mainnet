@@ -58,7 +58,7 @@ vimdiff ~/panacea-2-backup/.panacead/config/app.toml ~/.panacea/config/app.toml
 
 6. Download the new `genesis.json`.
 ```bash
-curl -o ~/.panacead/config/genesis.json https://raw.githubusercontent.com/medibloc/panacea-launch/master/panacea-3/genesis.json
+curl -o - https://raw.githubusercontent.com/medibloc/panacea-launch/master/panacea-3/genesis.json.gz | gunzip > ~/.panacea/config/genesis.json
 ```
 
 7. Enable REST API enabled if you want
