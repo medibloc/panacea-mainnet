@@ -7,7 +7,7 @@ according to the new Cosmos SDK REST API or Panacea client SDKs.
 
 ## For Java SDK users
 
-The `panacea-java` [v2.0.0](https://github.com/medibloc/panacea-java/releases/tag/v2.0.0) has been released.
+The `panacea-java` [v2.0.1](https://github.com/medibloc/panacea-java/releases/tag/v2.0.1) has been released.
 
 The SDK interface has been changed because the underlying Cosmos SDK contains many breaking changes including the protocol migration from Amino to Protobuf.
 But, we have tried to design the new SDK interface as similar as possible to the previous one.
