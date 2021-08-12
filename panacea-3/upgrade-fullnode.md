@@ -1,7 +1,8 @@
 # Guidance for Full Node Operators
 
 - The commit hash of Panacea [v2.0.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.1): `b36d1dac432c75a6d865e75767fe227a4ca125ca`
-- The height will be reset to 0 after the upgrade. All data will be preserved.
+- The previous `panacea-2` chain will be halted at the block height: `12574375`.
+- The new `panacea-3` chain will be started with the block height: `0`. But, all data will be preserved.
 
 1. Verify that you are currently running the correct version (v1.3.3) of `panacead`.
 ```bash
