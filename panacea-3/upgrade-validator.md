@@ -32,7 +32,8 @@ and restore to their latest snapshot before restarting their nodes.
 **NOTE**: It is assumed that you are currently operating a validator node running Panacea v1.3.3-internal with the Cosmos SDK v0.37.14.
 
 - The commit hash of Panacea [v2.0.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.1): `b36d1dac432c75a6d865e75767fe227a4ca125ca`
-- The height will be reset to 0 after the upgrade. All data will be preserved.
+- The previous `panacea-2` chain will be halted at the block height: `12574375`.
+- The new `panacea-3` chain will be started with the block height: `0`. But, all data will be preserved.
 
 1. Verify that you are currently running the correct version (v1.3.3-internal) of `panacead`.
 ```bash
@@ -47,13 +48,13 @@ build_tags: ' ledger'
 go: go version go1.15.6 linux/amd64
 ```
 
-2. Restart the `panacead` process with the `--halt-height=<H>` option. `<H>` to be described by MediBloc soon.
+2. Restart the `panacead` process with the `--halt-height=12574375` option.
    If you are running multiple validator nodes, please perform a rolling restart to minimize risks.
 ```bash
 sudo systemctl stop panacead
 
 # Don't use systemctl because the process shouldn't be restarted automatically after being halted.
-panacead start --halt-height=<H> 
+panacead start --halt-height=12574375
 ```
 
 3. After the chain is halted, make a backup of your `~/.panacead` and `~/.panaceacli` directories.
