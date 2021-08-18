@@ -31,7 +31,6 @@ cc0285c4d9cec8489f8bfed0a749dd8636406a0d@54.180.169.37:26656
 
 See the [Join the Network](https://medibloc.gitbook.io/panacea-core/guide/join-the-network) guide.
 
-
 ## Public Endpoints
 
 Several public endpoints are provided by MediBloc.
@@ -40,3 +39,7 @@ Several public endpoints are provided by MediBloc.
 - Cosmos REST: https://api.gopanacea.org
 - Cosmos gRPC: https://grpc.gopanacea.org
 - Tendermint RPC: https://rpc.gopanacea.org
+
+## Explorer
+
+You can use an [explorer](https://explorer.gopanacea.org/) based on Big-Dipper
