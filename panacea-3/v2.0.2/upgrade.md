@@ -72,7 +72,7 @@ panacead start
 ```
 
 NOTE:
-If you are using the `cosmovisor`, please build the new `panacead` binary manually and put that under the `upgrade` directory. The auto-download is not supported yet because the appropriate version of the `libwasmvm.so` must be installed as well.
+If you are using the [cosmovisor](https://docs.cosmos.network/master/run-node/cosmovisor) process manager, please build the new `panacead` binary manually and put that under the [upgrade](https://docs.cosmos.network/master/run-node/cosmovisor.html#folder-layout) directory. The [auto-download](https://docs.cosmos.network/master/run-node/cosmovisor.html#auto-download) is not supported yet because the appropriate version of the [libwasmvm.so](https://github.com/CosmWasm/wasmvm/blob/v0.14.0/api/libwasmvm.so) must be installed as well. Instead of installing the `libwasmvm.so` seperately, I would recommend you build the `panacea-core` by the guide above. Then, the `libwasmvm.so` will be installed automatically.
 
 
 ## Note for Service Providers
