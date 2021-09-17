@@ -31,7 +31,7 @@ For more details, please see the v2.0.2 release note: https://github.com/mediblo
 
 ## Guides for Validators and Full-Node Operators
 
-Since this upgrade will be proposed as a Governance Proposal on Panacea, the state machine of your `panacead` process will be stopped automatically as soon as it finalize a block which has the block time larger than `2021-10-01T07:00:00Z`. Then, no more blocks will not be created until the process is restarted with the new version.
+Since this upgrade will be proposed as a Governance Proposal on Panacea, the state machine of your `panacead` process will be stopped automatically as soon as it finalizes a block which has the block time larger than `2021-10-01T07:00:00Z`. Then, no more blocks will not be created until the process is restarted with the new version.
 
 You will be able to see the following error logs:
 ```
