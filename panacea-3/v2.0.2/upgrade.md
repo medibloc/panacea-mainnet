@@ -6,9 +6,8 @@ full node operators must take in order to upgrade Panacea daemons from v2.0.1 to
 
 ## Summary
 
-- Governance Proposal: TBD
-- The upgrade will be started on `TBD` (`October 1, 2021` probably).
-  - Block height: `TBD`
+- Governance Proposal: https://www.mintscan.io/medibloc/proposals/2
+- The upgrade will be started after the block time `2021-10-01 07:00:00 UTC` if the voting period ends with the `passed` status.
 - Upgrade type: Soft-fork
     - The chain ID will not be changed (will be maintained as `panacea-3`).
     - The block height will not be reset.
@@ -27,20 +26,27 @@ The Cosmos team released the Cosmos SDK v0.42.9 which fixes a bug that prohibits
 (issue [#9800](https://github.com/cosmos/cosmos-sdk/issues/9800)) on Cosmos SDK v0.42.7 and v0.42.8.
 Therefore, it is required to upgrade the Cosmos SDK to v0.42.9 in order to enable IBC on Panacea.
 
-For more details, please see the v2.0.2 release note (TBD).
+For more details, please see the v2.0.2 release note: https://github.com/medibloc/panacea-core/releases/tag/v2.0.2.
 
 
 ## Guides for Validators and Full-Node Operators
 
-Since this upgrade will be proposed as a Governance Proposal on Panacea, your `panacead start` process will be shut down
-automatically at the time that was proposed on the Governance Proposal (TBD).
-When the process is stopped, it will print the following error logs:
+Since this upgrade will be proposed as a Governance Proposal on Panacea, the state machine of your `panacead` process will be stopped automatically as soon as it finalize a block which has the block time larger than `2021-10-01T07:00:00Z`. Then, no more blocks will not be created until the process is restarted with the new version.
+
+You will be able to see the following error logs:
 ```
-ERR UPGRADE "v2.0.2" NEEDED at height: <TBD>:
-ERR CONSENSUS FAILURE!!! err="UPGRADE \"v2.0.2\" NEEDED at height: <TBD>: "
+ERR UPGRADE "v2.0.2" NEEDED at time: 2021-10-01T07:00:00Z:
+ERR CONSENSUS FAILURE!!! err="UPGRADE \"v2.0.2\" NEEDED at time: 2021-10-01T07:00:00Z: "
 ```
 
-After that, you should replace the old `panacead` binary with the new one.
+Then, stop your process.
+```bash
+pkill panacead
+
+# or by other commands depending on your environment
+```
+
+After that, you should build a new binary as below. And, please replace the old `panacead` binary with the new one.
 
 ```bash
 git clone https://github.com/medibloc/panacea-core
@@ -61,7 +67,12 @@ cp -R ~/.panacea ~/panacea-3-v2.0.1-backup
 Then, you can start the `panacead` again.
 ```bash
 panacead start
+
+# or by other commands depending on your environment
 ```
+
+NOTE:
+If you are using the `cosmovisor`, please build the new `panacead` binary manually and put that under the `upgrade` directory. The auto-download is not supported yet because the appropriate version of the `libwasmvm.so` must be installed as well.
 
 
 ## Note for Service Providers
