@@ -2,10 +2,14 @@
 
 This repo contains genesis files of all historical chains of the Panacea Mainnet.
 
+The current the Panacea mainnet version is [v2.0.2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.2). However if you want to build from scratch you need to first run [v2.0.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.1) until the node panics at block height 1954745. The node should stop running after the panic, if it does not stop automatically, wait for 5-10 minutes and then kill it manually. If the node is stopped, install and run as [v2.0.2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.2) version. This will begin syncing the node since the last upgrade until it is at the current height.
+
+If you want to run with [v2.0.2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.2), please use the [snapshot](./panacea-3/v2.0.2/snapshot.md) below.
+
 
 ## Intro
 
-- Version: Panacea Core [v2.0.1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.1)
+- Version: Panacea Core [v2.0.2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.2)
 - Chain ID: `panacea-3`
 - Genesis file: https://github.com/medibloc/panacea-mainnet/raw/master/panacea-3/genesis.json.gz
 
