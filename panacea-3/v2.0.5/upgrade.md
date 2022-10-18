@@ -3,6 +3,12 @@
 The following document describes the necessary steps involved that validators and
 full node operators must take in order to upgrade Panacea daemons from v2.0.3 to v2.0.5.
 
+- [Summary](#summary)
+- [Changes](#changes)
+- [Guides for Validators and Full-Node Operators](#guides-for-validators-and-full-node-operators)
+    - [Rollback Strategy](#rollback-strategy)
+- [Note for Service Providers](#note-for-service-providers)
+
 
 ## Summary
 
