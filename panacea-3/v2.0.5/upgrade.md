@@ -7,7 +7,8 @@ full node operators must take in order to upgrade Panacea daemons from v2.0.3 to
 ## Summary
 
 - SoftwareUpgrade Governance Proposal: TODO: link
-- The upgrade will be started after the block time `2022-10-24 07:00:00 UTC` if the voting period of the SoftwareUpgrade proposal ends with the `passed` status.
+- The upgrade will be started on the block height 7700000 (approximately, on Monday October 24, UTC 06:00), if the voting period of the SoftwareUpgrade proposal ends with the `passed` status.
+    - See countdown [here](https://www.mintscan.io/medibloc/blocks/7700000).
 - Upgrade type: Soft-fork
     - The chain ID will not be changed (will be maintained as `panacea-3`).
     - The block height will not be reset.
@@ -26,13 +27,13 @@ full node operators must take in order to upgrade Panacea daemons from v2.0.3 to
 
 ## Guides for Validators and Full-Node Operators
 
-If this SoftwareUpgrade proposal is approved, the state machine of the `panacead` will be stopped as soon as a proposed block time `2022-10-24 07:00:00 UTC` is reached.
+If this SoftwareUpgrade proposal is approved, the state machine of the `panacead` will be stopped as soon as the chain reaches to the block height 7700000.
 It means that new blocks will not be produced until the `panacead` daemon is restarted with the new version.
 
 When the state machine is stopped, you will be able to see the following error logs:
 ```
-ERR UPGRADE "v2.0.5" NEEDED at time: 2022-10-24T07:00:00Z:
-ERR CONSENSUS FAILURE!!! err="UPGRADE \"v2.0.5\" NEEDED at time: 2022-10-24T07:00:00Z: "
+ERR UPGRADE "v2.0.5" NEEDED at height: 7700000:
+ERR CONSENSUS FAILURE!!! err="UPGRADE \"v2.0.5\" NEEDED at height: 7700000: "
 ```
 
 Then, stop your process.
@@ -105,11 +106,11 @@ But, if there is no other way, we will roll the chain back to the v2.0.3 by foll
     ```
 4. Start the process with skipping the upgrade which was registered by the SoftwareUpgrade proposal.
     ```bash
-    panacead start --unsafe-skip-upgrades <upgrade-height>
+    panacead start --unsafe-skip-upgrades 7700000
 
     # or by other commands depending on your environment
     ```
-5. Check if your node produces new blocks successfully, after 2/3+ of validators complete the rollback.
+5. Check if your node produces new blocks from the height 7700001 successfully, after 2/3+ of validators complete the rollback.
 
 
 ## Note for Service Providers
