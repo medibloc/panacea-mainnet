@@ -113,6 +113,10 @@ NOTE: We assume that you already backed up your `~/.panacea` directory before up
 
 ## Note for Service Providers
 
-If you are using the latest version of [panacea-java](https://github.com/medibloc/panacea-java) or [panacea-js](https://github.com/medibloc/panacea-js) library, you don't need to change the library that you are using. There is no new release related to this chain upgrade.
+If you are using [panacea-java v2.0.1+](https://github.com/medibloc/panacea-java) or [panacea-js v2.0.2+](https://github.com/medibloc/panacea-js) library, it is not mandatory to bump the library version that you are using. Those library versions are compatible with the panacea-core v2.0.5.
 
 However, there are some API breaking changes from the Cosmos SDK side. You can find all API breaking changes between v0.42.x and v0.45.9 from the [Cosmos SDK change log](https://github.com/cosmos/cosmos-sdk/blob/v0.45.9/CHANGELOG.md).
+
+As highlights,
+- The `GetTx` gRPC request returns NOT_FOUND, instead of INVALID_ARGUMENT: https://github.com/cosmos/cosmos-sdk/pull/11014.
+- The events from `x/bank` have been changed: https://github.com/cosmos/cosmos-sdk/pull/8656.
