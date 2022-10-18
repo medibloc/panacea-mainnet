@@ -79,10 +79,8 @@ In the event of an issue at upgrade time, we should coordinate via the validator
 We will try to fix the issue by making a hotfix without rolling the chain back.
 But, if there is no other way, we will roll the chain back to the v2.0.3 by following the steps below.
 
-0. We assume that you already backed up your `~/.panacea` directory before upgrading your node, as explained above. For example:
-    ```bash
-    cp -R ~/.panacea ~/panacea-3-v2.0.3-bak
-    ```
+NOTE: We assume that you already backed up your `~/.panacea` directory before upgrading your node, as explained above.
+
 1. Stop the process running.
     ```bash
     pkill panacead
@@ -92,7 +90,7 @@ But, if there is no other way, we will roll the chain back to the v2.0.3 by foll
 2. Delete the new state, and recover the previous state from the backup that you made.
     ```bash
     rm -rf ~/.panacea/data
-    cp -R ~/panacea-3-v2.0.3-bak/data ~/.panacea/data
+    cp -R ~/panacea-3-v2.0.3-backup/data ~/.panacea/data
     ```
 3. Prepare the previous `panacead` v2.0.3 binary.
     ```bash
