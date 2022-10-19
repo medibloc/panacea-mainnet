@@ -78,7 +78,7 @@ panacead start
 NOTE:
 If you are using the [Cosmovisor](https://medibloc.gitbook.io/panacea-core/guide/cosmovisor) process manager, please build the new `panacead` binary manually and put that under the `$HOME/.panacea/cosmovisor/upgrades/v2.0.5/bin/` by following the [guide](https://medibloc.gitbook.io/panacea-core/guide/cosmovisor#cosmovisor-setup). The [auto-download](https://github.com/cosmos/cosmos-sdk/tree/main/cosmovisor#auto-download) is not supported yet because the appropriate version of the [libwasmvm.so](https://github.com/CosmWasm/wasmvm/blob/v0.14.0/api/libwasmvm.so) must be installed as well. Instead of installing the `libwasmvm.so` separately, I would recommend you build the `panacea-core` by the guide above. Then, the `libwasmvm.so` will be installed automatically.
 
-NOTE: Since Cosmos SDK v0.43, a new configuration [grpc-web](https://github.com/cosmos/cosmos-sdk/blob/2582f0aab7b2cbf66ade066fe570a4622cf0b098/server/config/toml.go#L182) has been added to the `config.toml`. This configuration is enabled by default with a port 9091. If you don't want this feature, please disable this or change the port.
+NOTE: Since Cosmos SDK v0.43, a new configuration [grpc-web](https://github.com/cosmos/cosmos-sdk/blob/2582f0aab7b2cbf66ade066fe570a4622cf0b098/server/config/toml.go#L182) has been added to the `config.toml`. This configuration is enabled by default with a port 9091. If you don't want this feature, please disable it or change the port.
 
 ### Rollback Strategy
 
