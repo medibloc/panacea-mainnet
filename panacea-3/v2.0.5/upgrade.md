@@ -61,7 +61,8 @@ panacead version
 # should print v2.0.5
 ```
 
-(Recommended) Before starting the new `panacead` process, please back up the `~/.panacea` directory just in case.
+Prior to the upgrade, validators are encouraged to take a full data snapshot. Snapshotting depends heavily on infrastructure, but generally this can be done by backing up the `~/.panacea` directory as below.<br>
+**IMPORTANT**: It is critically important for validator operators to back-up the `~/.panacea/data/priv_validator_state.json` file after stopping the `panacead` process. This file is updated every block as your validator participates in consensus rounds. It is a critical file needed to prevent double-signing, in case the upgrade fails and the previous chain needs to be restarted.
 ```bash
 cp -R ~/.panacea ~/panacea-3-v2.0.3-backup
 
