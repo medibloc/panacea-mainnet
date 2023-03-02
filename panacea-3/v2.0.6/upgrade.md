@@ -19,11 +19,12 @@ full node operators must take in order to upgrade Panacea daemons from v2.0.5 to
     - The chain ID will not be changed (will be maintained as `panacea-3`).
     - The block height will not be reset.
 
-  | | Before                                                                                     | After                                                                                           |
-        |--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|-----------|
+ | | Before                                                                                     | After                                                  |
+ |--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|-----------|
   |Panacea| [v2.0.5](https://github.com/medibloc/panacea-core/releases/tag/v2.0.5)                     | [v2.0.6](https://github.com/medibloc/panacea-core/releases/tag/v2.0.6)                          |
   |Cosmos SDK| [v0.45.9-panacea.1](https://github.com/medibloc/cosmos-sdk/releases/tag/v0.45.9-panacea.1) | [v0.45.12-panacea.1](https://github.com/medibloc/cosmos-sdk/releases/tag/v0.45.12-panacea.1)    |
   |Tendermint| [v0.34.21](https://github.com/tendermint/tendermint/releases/tag/v0.34.21)                 | [v0.34.24-informalsystems](https://github.com/informalsystems/tendermint/releases/tag/v0.34.24) |
+
 
 ## Changes
 
