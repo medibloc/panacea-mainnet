@@ -4,7 +4,7 @@ This repo contains genesis files of all historical chains of the Panacea Mainnet
 
 The current the Panacea mainnet version is [v2.0.6](https://github.com/medibloc/panacea-core/releases/tag/v2.0.6).
 
-From v2.0.6, panacea supports state sync for rapid syncing with the network, thus we do not provide snapshot data anymore.
+From v2.0.5, panacea supports state sync for rapid syncing with the network, thus we do not provide snapshot data anymore.
 
 We recommend to set state sync enabled on your node. Please refer to our [guide](https://medibloc.gitbook.io/panacea-core/for-validators/join-mainnet-testnet#state-sync).
 
