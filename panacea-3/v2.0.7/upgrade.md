@@ -113,7 +113,7 @@ NOTE: We assume that you already backed up your `~/.panacea` directory before up
     rm -rf ~/.panacea/data
     cp -R ~/panacea-3-v2.0.6-backup/data ~/.panacea/data
     ```
-3. Prepare the previous `panacead` v2.0.5 binary.
+3. Prepare the previous `panacead` v2.0.6 binary.
     ```bash
     git clone https://github.com/medibloc/panacea-core
     cd panacea-core
