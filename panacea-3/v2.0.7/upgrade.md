@@ -1,7 +1,7 @@
 # Panacea v2.0.7 Upgrade Instructions
 
 The following document describes the necessary steps involved that validators and
-full node operators must take in order to upgrade Panacea daemons from v2.0.6 to v2.0.7.
+full node operators must take in order to upgrade Panacea daemons from v2.0.6 to v2.0.7-1.
 
 - [Summary](#summary)
 - [Changes](#changes)
@@ -22,7 +22,7 @@ full node operators must take in order to upgrade Panacea daemons from v2.0.6 to
 
  | | Before                                                                                     | After                                                  |
  |--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|-----------|
-  |Panacea| [v2.0.6](https://github.com/medibloc/panacea-core/releases/tag/v2.0.6)                     | [v2.0.7](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7)                          |
+  |Panacea| [v2.0.6](https://github.com/medibloc/panacea-core/releases/tag/v2.0.6)                     | [v2.0.7-1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7-1)                          |
   |Cosmos SDK| [v0.45.12-panacea.1](https://github.com/medibloc/cosmos-sdk/releases/tag/v0.45.12-panacea.1) | Not changed   |
   |Tendermint| [v0.34.24-informalsystems](https://github.com/informalsystems/tendermint/releases/tag/v0.34.24) | Not changed |
 
@@ -58,11 +58,11 @@ After that, you should build a new binary as below. And, please replace the old 
 ```bash
 git clone https://github.com/medibloc/panacea-core
 cd panacea-core
-git checkout v2.0.7
+git checkout v2.0.7-1
 make install
 
 panacead version
-# should print v2.0.7
+# should print v2.0.7-1
 ```
 
 Prior to the upgrade, validators are encouraged to take a full data snapshot. Snapshotting depends heavily on
