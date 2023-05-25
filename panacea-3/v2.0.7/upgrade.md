@@ -24,7 +24,7 @@ full node operators must take in order to upgrade Panacea daemons from v2.0.6 to
 |------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
 | Panacea    | [v2.0.6](https://github.com/medibloc/panacea-core/releases/tag/v2.0.6)                           | [v2.0.7-2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7-2) |
 | Cosmos SDK | [v0.45.12-panacea.1](https://github.com/medibloc/cosmos-sdk/releases/tag/v0.45.12-panacea.1)     | Not changed                                                                 |
-| Tendermint | [v0.34.24-informalsystems](https://github.com/informalsystems/tendermint/releases/tag/v0.34.24)  | No changed                                                                 |
+| Tendermint | [v0.34.24-informalsystems](https://github.com/informalsystems/tendermint/releases/tag/v0.34.24)  | Not changed                                                                 |
 
 
 ## Changes
