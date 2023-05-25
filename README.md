@@ -2,7 +2,7 @@
 
 This repo contains genesis files of all historical chains of the Panacea Mainnet.
 
-The current the Panacea mainnet version is [v2.0.7-1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.6).
+The current the Panacea mainnet version is [v2.0.7-2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7-2).
 
 From v2.0.5, panacea supports state sync for rapid syncing with the network, thus we do not provide snapshot data anymore.
 
@@ -10,7 +10,7 @@ We recommend to set state sync enabled on your node. Please refer to our [guide]
 
 ## Intro
 
-- Version: Panacea Core [v2.0.7-1](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7-1)
+- Version: Panacea Core [v2.0.7-2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7-2)
 - Chain ID: `panacea-3`
 - Genesis file: https://github.com/medibloc/panacea-mainnet/raw/master/panacea-3/genesis.json.gz
 
