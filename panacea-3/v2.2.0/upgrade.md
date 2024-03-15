@@ -71,6 +71,7 @@ panacead version
 
 Prior to the upgrade, validators are encouraged to take a full data snapshot. Snapshotting depends heavily on
 infrastructure, but generally this can be done by backing up the `~/.panacea` directory as below.<br>
+
 **IMPORTANT**: It is critically important for validator operators to back-up
 the `~/.panacea/data/priv_validator_state.json` file after stopping the `panacead` process. This file is updated every
 block as your validator participates in consensus rounds. It is a critical file needed to prevent double-signing, in
