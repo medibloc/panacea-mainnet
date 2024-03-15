@@ -76,6 +76,7 @@ infrastructure, but generally this can be done by backing up the `~/.panacea` di
 the `~/.panacea/data/priv_validator_state.json` file after stopping the `panacead` process. This file is updated every
 block as your validator participates in consensus rounds. It is a critical file needed to prevent double-signing, in
 case the upgrade fails and the previous chain needs to be restarted.
+
 The `~/.panacea/config/priv_validator_key.json` file is also crucial, especially for validators. If this file is lost, validators must register anew as a validator.
 
 Note: Before the upgrade, we plan to back up the state information of the last block height and store it on S3. However, as this process is time-consuming, we recommend node operators to back up the data themselves.
