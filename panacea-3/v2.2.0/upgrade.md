@@ -147,6 +147,6 @@ NOTE: We assume that you already backed up your `~/.panacea` directory before up
 The service provider has introduced new features, requiring an upgrade to utilize these new functionalities. 
 We provide the following SDKs for this purpose:
 
-For Java: panacea-java - [v2.2.0](https://github.com/medibloc/panacea-java/releases/tag/v2.2.0)
-For JavaScript: panacea-js - [v2.2.0](https://github.com/medibloc/panacea-js/releases/tag/v2.2.0)
+- For Java: panacea-java - [v2.2.0](https://github.com/medibloc/panacea-java/releases/tag/v2.2.0)
+- For JavaScript: panacea-js - [v2.2.0](https://github.com/medibloc/panacea-js/releases/tag/v2.2.0)
 
