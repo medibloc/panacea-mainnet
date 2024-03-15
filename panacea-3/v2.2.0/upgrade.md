@@ -13,7 +13,7 @@ full node operators must take in order to upgrade Panacea daemons from v2.0.7-2 
 ## Summary
 
 - SoftwareUpgrade Governance Proposal: https://www.mintscan.io/medibloc/proposals/16
-- The upgrade will be started on the block height 15281100 (approximately, on Thursday March 21 2024, UTC 08:30), if the
+- The upgrade will be started on the block height 15281100 (approximately, on Thursday March 21 2024, UTC 08:00), if the
   voting period of the SoftwareUpgrade proposal ends with the `passed` status.
     - See countdown [here](https://www.mintscan.io/medibloc/blocks/15281100).
 - Upgrade type: Soft-fork
