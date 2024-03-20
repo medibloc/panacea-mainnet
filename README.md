@@ -2,22 +2,22 @@
 
 This repo contains genesis files of all historical chains of the Panacea Mainnet.
 
-The current the Panacea mainnet version is [v2.0.7-2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7-2).
+The current the Panacea mainnet version is [v2.2.0](https://github.com/medibloc/panacea-core/releases/tag/v2.2.0).
 
 From v2.0.5, panacea supports state sync for rapid syncing with the network, thus we do not provide snapshot data anymore.
 
-We recommend to set state sync enabled on your node. Please refer to our [guide](https://medibloc.gitbook.io/panacea-core/for-validators/join-mainnet-testnet#state-sync).
+We recommend to set state sync enabled on your node. Please refer to our [guide](https://docs.gopanacea.org/guide/join-the-network#state-sync).
 
 ## Intro
 
-- Version: Panacea Core [v2.0.7-2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7-2)
+- Version: Panacea Core [v2.2.0](https://github.com/medibloc/panacea-core/releases/tag/v2.2.0)
 - Chain ID: `panacea-3`
 - Genesis file: https://github.com/medibloc/panacea-mainnet/raw/master/panacea-3/genesis.json.gz
 
 
 ## Persistent Peers
 
-These public nodes below are operated by MediBloc with [PEX](https://docs.tendermint.com/master/spec/p2p/messages/pex.html) enabled.
+These public nodes below are operated by MediBloc with [PEX](https://github.com/cometbft/cometbft/blob/main/spec/p2p/implementation/pex.md) enabled.
 
 You can add them to the `persistent_peers` in your `config.toml`. For more details, please see the [Tendermint document](https://docs.tendermint.com/v0.34/tendermint-core/using-tendermint.html#peers).
 
@@ -30,7 +30,7 @@ c238f279c970764d6893ae44bdf5c949dc22b009@13.114.44.199:26656
 
 ## Node Operations Guide
 
-See the [Join the Network](https://docs.gopanacea.org/for-validators/3-join-mainnet-testnet) guide.
+See the [Join the Network](https://docs.gopanacea.org/guide/join-the-network) guide.
 
 
 ## Public Endpoints
@@ -45,4 +45,5 @@ Several public endpoints are provided by MediBloc.
 
 ## Explorer
 
-You can use an [explorer](https://explorer.gopanacea.org/) based on Big-Dipper
+You can use [Mintscan](https://www.mintscan.io/medibloc), provided by Cosmostation, for exploring the blockchain. 
+Additionally, as a supplementary tool, you have the option to use an [explorer](https://explorer.gopanacea.org) based on Callisto.
