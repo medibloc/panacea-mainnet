@@ -148,5 +148,5 @@ The service provider has introduced new features, requiring an upgrade to utiliz
 We provide the following SDKs for this purpose:
 
 - For Java: panacea-java - [v2.2.0](https://github.com/medibloc/panacea-java/releases/tag/v2.2.0)
-- For JavaScript: panacea-js - [v2.2.0](https://github.com/medibloc/panacea-js/releases/tag/v2.2.0)
+- For JavaScript: panacea-js - [v2.2.1](https://github.com/medibloc/panacea-js/releases/tag/v2.2.1)
 
