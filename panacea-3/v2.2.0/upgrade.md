@@ -24,7 +24,8 @@ full node operators must take in order to upgrade Panacea daemons from v2.0.7-2 
 |------------------------|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
 | Panacea                | [v2.0.7-2](https://github.com/medibloc/panacea-core/releases/tag/v2.0.7-2)                      | [v2.2.0](https://github.com/medibloc/panacea-core/releases/tag/v2.2.0) |
 | Cosmos SDK             | [v0.45.12-panacea.1](https://github.com/medibloc/cosmos-sdk/releases/tag/v0.45.12-panacea.1)    | [v0.47.10](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.47.10) |
-| Tendermint to Cometbft | [v0.34.24-informalsystems](https://github.com/informalsystems/tendermint/releases/tag/v0.34.24) | [v0.37.4](https://github.com/cometbft/cometbft/releases/tag/v0.37.4)                                                            |
+| Tendermint to Cometbft | [v0.34.24-informalsystems](https://github.com/informalsystems/tendermint/releases/tag/v0.34.24) | [v0.37.4](https://github.com/cometbft/cometbft/releases/tag/v0.37.4)   |
+| ibc-go                 | [v4.3.1](https://github.com/cosmos/ibc-go/releases/tag/v4.3.1)                                  | [v7.3.2](https://github.com/cosmos/ibc-go/releases/tag/v7.3.2)         |
 
 
 ## Changes
