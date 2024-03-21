@@ -1,7 +1,7 @@
 # Panacea v2.2.0 Upgrade Instructions
 
 The following document describes the necessary steps involved that validators and
-full node operators must take in order to upgrade Panacea daemons from v2.0.7-2 to v2.2.0.
+full node operators must take in order to upgrade Panacea daemons from v2.0.7-2 to v2.2.0-1.
 
 - [Summary](#summary)
 - [Changes](#changes)
