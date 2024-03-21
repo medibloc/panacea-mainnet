@@ -67,7 +67,7 @@ git checkout tags/v2.2.0-1
 make install
 
 panacead version
-# should print 2.2.0
+# should print 2.2.0-1
 ```
 
 Prior to the upgrade, validators are encouraged to take a full data snapshot. Snapshotting depends heavily on
