@@ -1,199 +1,303 @@
 # Panacea v2.3.0 Mainnet Upgrade
 
-> [!WARNING]
-> This is a draft upgrade guide. The proposal, upgrade height, schedule, and
-> release artifacts are not final. Do not use it for mainnet operations yet.
+This guide covers upgrading a node running v2.2.0 or v2.2.1 on `panacea-3`,
+using either Cosmovisor or a manual restart. The commands assume that the
+Panacea home is `$HOME/.panacea`. Replace that path if your node uses a
+different home.
 
-This guide is for validators and full-node operators upgrading `panacea-3`
-from v2.2.1 to v2.3.0.
+## Release
 
-## Summary
+- Release: https://github.com/medibloc/panacea-core/releases/tag/v2.3.0
+- Commit: `91c74f66aaeb0b2fc37282175eee400d0767e37f`
+- AMD64 SHA256: `833c2d3c7dca815692e2050f2180a65736669c654965dae89175982c3139d499`
+- ARM64 SHA256: `c2f7d6dfd97fe2091abe3d5a61eeef4930c4ca1bc5d7e3d9c8156c320283bfa6`
+- Upgrade height: `28,074,600`
+- Estimated time: `2026-08-20 16:00 KST` (`07:00 UTC`)
+- Countdown: [Mintscan](https://www.mintscan.io/medibloc/block/28074600)
 
-- Governance proposal: **TBD**
-- Upgrade height: **TBD**
-- Estimated time: **TBD** (block times vary; monitor the chain)
-- Upgrade plan name: `v2.3.0`
-- Release commit: **TBD**
-- Chain ID: `panacea-3` (unchanged)
+The estimated time and countdown may shift with block production. The upgrade
+will occur at the specified block height.
 
-| Component | Before | After |
-| --- | --- | --- |
-| Panacea | v2.2.1 | v2.3.0 |
-| Cosmos SDK | v0.47.10 | v0.50.15 |
-| CometBFT | v0.37.18 | v0.38.23 |
-| IBC-Go | v7.3.2 | v8.8.0 |
+## Upgrade overview
 
-The release adds the Panacea NFT module, retires the legacy PNFT runtime, and
-changes node-local configuration and CLI behavior. Read the
-[v2.3.0 release notes](https://github.com/medibloc/panacea-core/releases/tag/v2.3.0)
-before voting or upgrading.
+This upgrade requires more than a binary restart: it includes a configuration
+migration and narrows the supported application database backends to
+`goleveldb`.
 
-## Before waiting for the upgrade height
+Before the upgrade height, verify the release binary, back up the essential
+files, and migrate `app.toml` to the SDK v0.50 format. Most importantly,
+confirm that `db_backend` is `goleveldb` and `app-db-backend` is either empty
+or `goleveldb`. Then prepare the verified binary for either Cosmovisor or a
+manual restart at the approved height.
 
-Complete this section while v2.2.1 is running and fully synced. When Cosmovisor
-is used, `PANACEA_HOME` below must be the same directory configured as
-`DAEMON_HOME`. Stage the binary, back up the active configuration, and migrate
-`app.toml` before waiting for the upgrade height:
+## What changes in v2.3.0
 
-```text
-$PANACEA_HOME/cosmovisor/upgrades/v2.3.0/bin/panacead  # staged binary
-$PANACEA_HOME/config/app.toml                          # active configuration
-```
+- Upgrades Cosmos SDK to v0.50.15, CometBFT to v0.38.23, and IBC-Go to
+  v8.8.0.
+- Adds the v2.3.0 upgrade handler and Panacea NFT module while preserving
+  support for legacy AOL and DID signing.
+- Moves gRPC-Web to the API listener, updates the client configuration
+  commands, and removes application DB support for backends other than
+  `goleveldb`.
 
-### 1. Prepare the binary
+## Before the upgrade
 
-Download the official binary for your platform from the v2.3.0 release and
-verify its published checksum.
-
-```sh
-export PANACEA_HOME="${PANACEA_HOME:-$HOME/.panacea}"
-export PANACEAD_V230=/path/to/panacead-v2.3.0
-
-"$PANACEAD_V230" version --long
-```
-
-The version must be `2.3.0`. Source builds require Go 1.26.5.
-
-If you use Cosmovisor, stage the binary in advance:
+### 1. Check the node architecture
 
 ```sh
-mkdir -p "$PANACEA_HOME/cosmovisor/upgrades/v2.3.0/bin"
-cp "$PANACEAD_V230" \
-  "$PANACEA_HOME/cosmovisor/upgrades/v2.3.0/bin/panacead"
-chmod +x "$PANACEA_HOME/cosmovisor/upgrades/v2.3.0/bin/panacead"
-
-export PANACEAD_V230="$PANACEA_HOME/cosmovisor/upgrades/v2.3.0/bin/panacead"
-"$PANACEAD_V230" version --long
+uname -m
 ```
 
-Keep Cosmovisor automatic binary downloads disabled.
+Follow the section that matches your node architecture:
 
-### 2. Back up the node
+| `uname -m` output | Use |
+| --- | --- |
+| `x86_64` or `amd64` | AMD64 |
+| `aarch64` or `arm64` | ARM64 |
 
-Follow your normal node backup procedure. Validator operators must preserve the
-latest `data/priv_validator_state.json` and `config/priv_validator_key.json` to
-avoid double-signing or losing the validator key.
+### 2. Download and verify v2.3.0
 
-Back up and restore the node data and validator signing state together from the
-same recovery point.
+The final `cp` command creates the common `panacead` path used by the remaining
+steps.
 
-Back up the local configuration before changing it:
+#### AMD64
 
 ```sh
-cp -p "$PANACEA_HOME/config/app.toml" \
-  "$PANACEA_HOME/config/app.toml.pre-v2.3.0"
-cp -p "$PANACEA_HOME/config/client.toml" \
-  "$PANACEA_HOME/config/client.toml.pre-v2.3.0"
-cp -p "$PANACEA_HOME/config/config.toml" \
-  "$PANACEA_HOME/config/config.toml.pre-v2.3.0"
+mkdir -p $HOME/.panacea/releases/v2.3.0
+cd $HOME/.panacea/releases/v2.3.0
+
+curl -fL -O https://github.com/medibloc/panacea-core/releases/download/v2.3.0/panacead-linux-amd64
+curl -fL -O https://github.com/medibloc/panacea-core/releases/download/v2.3.0/panacead-linux-amd64.sha256
+
+sha256sum -c panacead-linux-amd64.sha256
+
+chmod +x panacead-linux-amd64
+./panacead-linux-amd64 version --long | grep -E '^(version|commit):'
+
+cp -p panacead-linux-amd64 panacead
 ```
 
-### 3. Migrate `app.toml`
+The checksum verification must report `panacead-linux-amd64: OK`. The version
+output must contain `version: 2.3.0` and commit
+`91c74f66aaeb0b2fc37282175eee400d0767e37f`.
 
-Generate a v0.50 preview without changing the active configuration:
+#### ARM64
 
 ```sh
-"$PANACEAD_V230" config migrate v0.50 \
-  --home "$PANACEA_HOME" \
-  --stdout >"$PANACEA_HOME/config/app.toml.v0.50.preview"
+mkdir -p $HOME/.panacea/releases/v2.3.0
+cd $HOME/.panacea/releases/v2.3.0
+
+curl -fL -O https://github.com/medibloc/panacea-core/releases/download/v2.3.0/panacead-linux-arm64
+curl -fL -O https://github.com/medibloc/panacea-core/releases/download/v2.3.0/panacead-linux-arm64.sha256
+
+sha256sum -c panacead-linux-arm64.sha256
+
+chmod +x panacead-linux-arm64
+./panacead-linux-arm64 version --long | grep -E '^(version|commit):'
+
+cp -p panacead-linux-arm64 panacead
+```
+
+The checksum verification must report `panacead-linux-arm64: OK`. The version
+output must contain `version: 2.3.0` and commit
+`91c74f66aaeb0b2fc37282175eee400d0767e37f`.
+
+### 3. Back up the essential files
+
+Create a timestamped backup containing the configuration, validator key, and
+validator signing state:
+
+```sh
+BACKUP_DIR="$HOME/.panacea/backups/pre-v2.3.0-files-$(date -u +%Y%m%dT%H%M%SZ)"
+mkdir -m 0700 -p "$BACKUP_DIR"
+
+tar -C $HOME/.panacea -czf "$BACKUP_DIR/config.tar.gz" config
+cp -p $HOME/.panacea/data/priv_validator_state.json "$BACKUP_DIR/"
+echo "$BACKUP_DIR"
+```
+
+Verify that the validator key is in the archive, then create and verify the
+backup checksums:
+
+```sh
+tar -tzf "$BACKUP_DIR/config.tar.gz" |
+  grep '^config/priv_validator_key.json$'
+
+cd "$BACKUP_DIR"
+sha256sum config.tar.gz priv_validator_state.json >SHA256SUMS
+sha256sum -c SHA256SUMS
+du -sh "$BACKUP_DIR"
+```
+
+The key check must print `config/priv_validator_key.json`, and every checksum
+must report `OK`.
+
+### 4. Migrate `app.toml`
+
+Generate a preview and review it before changing the active file:
+
+```sh
+$HOME/.panacea/releases/v2.3.0/panacead config migrate v0.50 \
+  --home $HOME/.panacea \
+  --stdout >$HOME/.panacea/config/app.toml.v0.50.preview
+
 diff -u \
-  "$PANACEA_HOME/config/app.toml" \
-  "$PANACEA_HOME/config/app.toml.v0.50.preview"
+  $HOME/.panacea/config/app.toml \
+  $HOME/.panacea/config/app.toml.v0.50.preview
 ```
 
-The migration updates only `$PANACEA_HOME/config/app.toml`. It does not modify
-`client.toml` or CometBFT `config.toml`; keep those files and review
-`config.toml` separately.
+Most changes should be new defaults or the removal of obsolete settings.
+Confirm that node-specific values remain correct.
 
-The preview diff is expected to add settings introduced in v0.50 and remove
-obsolete settings. Before applying the migration, review any removed or changed
-values and confirm that the newly added defaults are appropriate for the node.
-
-After reviewing the diff, apply the migration and validate the result:
+After reviewing the diff, apply the migration and set the recommended query
+limits:
 
 ```sh
-"$PANACEAD_V230" config migrate v0.50 --home "$PANACEA_HOME"
-"$PANACEAD_V230" config view app --home "$PANACEA_HOME" >/dev/null
+$HOME/.panacea/releases/v2.3.0/panacead config migrate v0.50 \
+  --home $HOME/.panacea
+
+$HOME/.panacea/releases/v2.3.0/panacead config set app query-gas-limit 10000000 \
+  --home $HOME/.panacea
+
+$HOME/.panacea/releases/v2.3.0/panacead config set app api.rpc-write-timeout 10 \
+  --home $HOME/.panacea
+
+$HOME/.panacea/releases/v2.3.0/panacead config set app grpc.max-send-msg-size 10485760 \
+  --home $HOME/.panacea
 ```
 
-Confirm that the application DB resolves to `goleveldb`:
+Validate `app.toml` and check both database backend settings:
 
 ```sh
+$HOME/.panacea/releases/v2.3.0/panacead config view app \
+  --home $HOME/.panacea >/dev/null && echo 'app.toml: OK'
+
 grep -nE '^(db_backend|app-db-backend) =' \
-  "$PANACEA_HOME/config/config.toml" \
-  "$PANACEA_HOME/config/app.toml"
+  $HOME/.panacea/config/config.toml \
+  $HOME/.panacea/config/app.toml
 ```
 
-The expected result is `db_backend = "goleveldb"` with either
-`app-db-backend = ""` or `app-db-backend = "goleveldb"`.
+The first command must print `app.toml: OK`. `db_backend` must be `goleveldb`,
+and `app-db-backend` must be empty or `goleveldb`. Do not start v2.3.0 with
+`cleveldb`, `boltdb`, or `badgerdb`. If validation fails or either backend has
+another value, do not start v2.3.0; report it in the official validator
+channel.
 
-Do not start v2.3.0 with `cleveldb`, `boltdb`, or `badgerdb` selected for the
-application database.
+### 5. Check the startup command
 
-`client.toml` remains in place, but automation that reads or writes it must use
-the new command form: `panacead config get client <key>` or
-`panacead config set client <key> <value>`.
+Skip this step if the node's startup command does not include
+`--grpc-web.address`. If it does, remove the option before the upgrade because
+v2.3.0 no longer supports it. Then restart the node with the same v2.2.0 or
+v2.2.1 binary using your normal process manager and confirm that it resumes
+normally.
 
-### 4. Query endpoint compatibility
+### 6. Choose an upgrade method
 
-`--grpc-web.address` is not supported by v2.3.0. Remove it from the node service
-command. Cosmovisor users must restart v2.2.1 before the upgrade so that the
-automatic binary switch does not reuse it. If the node serves gRPC-Web, update
-and verify its client or proxy route before that restart.
+Use one method only:
 
-Nodes that do not expose public REST, gRPC, gRPC-Web, or application-query
-endpoints can skip the rest of this section. These changes do not affect
-consensus.
+| Method | Before the upgrade height | At the upgrade height |
+| --- | --- | --- |
+| Cosmovisor | Stage the binary in the upgrade directory | Cosmovisor switches binaries automatically |
+| Manual restart | Keep the verified release binary ready | Start v2.3.0 after the current binary halts |
 
-In v2.2.1, gRPC-Web uses a separate listener configured by
-`grpc-web.address` (default `localhost:9091`). In v2.3.0, REST and gRPC-Web
-share `[api].address` (default `tcp://localhost:1317`), while native gRPC
-continues to use `[grpc].address` (default `localhost:9090`). Serving gRPC-Web
-requires `[api].enable`, `[grpc].enable`, and `[grpc-web].enable` to be `true`.
+#### Cosmovisor
 
-Update clients to the API address, or keep the client-facing address stable
-with a reverse proxy and switch its upstream at the upgrade height. Configure
-browser CORS under `[api].enabled-unsafe-cors` or at the proxy.
-
-Apply the Panacea serving defaults before waiting for the upgrade. The query gas
-limit takes effect with v2.3.0; the API and gRPC limits are also understood by
-v2.2.1.
+Stage the verified binary and confirm that the copy is identical:
 
 ```sh
-"$PANACEAD_V230" config set app query-gas-limit 10000000 \
-  --home "$PANACEA_HOME"
-"$PANACEAD_V230" config set app api.rpc-write-timeout 10 \
-  --home "$PANACEA_HOME"
-"$PANACEAD_V230" config set app grpc.max-send-msg-size 10485760 \
-  --home "$PANACEA_HOME"
+readlink -f $HOME/.panacea/cosmovisor/current
+
+mkdir -p $HOME/.panacea/cosmovisor/upgrades/v2.3.0/bin
+
+cp -p \
+  $HOME/.panacea/releases/v2.3.0/panacead \
+  $HOME/.panacea/cosmovisor/upgrades/v2.3.0/bin/panacead
+chmod +x $HOME/.panacea/cosmovisor/upgrades/v2.3.0/bin/panacead
+
+cmp \
+  $HOME/.panacea/releases/v2.3.0/panacead \
+  $HOME/.panacea/cosmovisor/upgrades/v2.3.0/bin/panacead \
+  && echo 'staged binary: OK'
+
+$HOME/.panacea/cosmovisor/upgrades/v2.3.0/bin/panacead version --long |
+  grep -E '^(version|commit):'
 ```
+
+The comparison must print `staged binary: OK`. The version must be `2.3.0`
+with the release commit listed above. Before the upgrade height,
+`cosmovisor/current` must still select the currently running v2.2.0 or v2.2.1
+binary.
+
+Do not change `cosmovisor/current` manually. Keep Cosmovisor automatic binary
+downloads disabled.
+
+#### Manual restart
+
+Keep the verified binary at
+`$HOME/.panacea/releases/v2.3.0/panacead`. Confirm that your normal process
+manager can be updated to use this path, but do not start v2.3.0 before the
+upgrade height.
 
 ## At the upgrade height
 
-If the proposal passes, the v2.2.1 binary stops at the upgrade height.
-Cosmovisor should switch to the staged `v2.3.0` binary automatically. Without
-Cosmovisor, stop the service, replace the binary, and start the service again.
+**Cosmovisor:** Watch the node logs. Cosmovisor should select
+`upgrades/v2.3.0/bin/panacead`, run the migration, and resume the chain.
 
-Do not use `--unsafe-skip-upgrades` unless validators have explicitly agreed on
-a coordinated recovery plan.
+**Manual restart:** Wait for the current v2.2.0 or v2.2.1 binary to halt at the
+approved height. Update your process manager to use
+`$HOME/.panacea/releases/v2.3.0/panacead`, then start the node.
 
-## Verify
+After v2.3.0 starts, allow the migration to finish. Do not interrupt the
+process unless it exits with an error.
 
-After restart, confirm:
+## After the upgrade
+
+Confirm that the running process uses the selected binary:
+
+- **Cosmovisor:** `readlink -f $HOME/.panacea/cosmovisor/current` must point
+  to `upgrades/v2.3.0`.
+- **Manual restart:** the process manager must use
+  `$HOME/.panacea/releases/v2.3.0/panacead`.
+
+Then check the version, applied upgrade, and sync status:
 
 ```sh
-"$PANACEAD_V230" version --long
-"$PANACEAD_V230" status --node tcp://127.0.0.1:26657
+$HOME/.panacea/releases/v2.3.0/panacead version --long |
+  grep -E '^(version|commit):'
+
+$HOME/.panacea/releases/v2.3.0/panacead query upgrade applied v2.3.0 \
+  --home $HOME/.panacea \
+  --node tcp://127.0.0.1:26657 \
+  --output json | jq
+
+curl -fsS --max-time 5 http://127.0.0.1:26657/status |
+  jq '.result.sync_info | {latest_block_height, latest_block_time, catching_up}'
 ```
 
-- the reported version is `2.3.0`, `catching_up` is `false`, and block height
-  continues to increase;
-- logs contain no store migration, module migration, or consensus errors;
-- REST, gRPC, gRPC-Web, RPC, and IBC relayers work where enabled.
+The version and commit must match the release, `catching_up` must be `false`,
+and the block height must continue increasing. Also review the node logs for
+migration or consensus errors.
+
+## Public API and CLI command changes
+
+This section applies only if the node exposes REST or gRPC-Web, or if you use
+the `panacead` CLI to read or change client settings. Skip this section
+otherwise. These changes do not affect consensus.
+
+In v2.3.0, gRPC-Web no longer has its own listener on port `9091`; it is
+served through the API listener, typically on port `1317`. Native gRPC
+continues to use the address configured under `[grpc]`. If clients currently
+use port `9091`, update them to the API address or keep the public address
+stable and switch the reverse proxy upstream at the upgrade height. If browser
+clients connect directly, configure CORS on the API listener or proxy.
+
+The CLI commands for reading or changing `client.toml` now use this form:
+
+- `panacead config get client <key>`
+- `panacead config set client <key> <value>`
 
 ## Recovery
 
-If the chain does not resume, stop making independent changes and coordinate in
-the official validator channel. Binary or chain-state rollback must be agreed
-by validators; restoring only a local configuration backup is safe before the
-v2.3.0 process starts.
+If the chain does not resume, preserve the logs and coordinate in the official
+validator channel. Do not independently use `--unsafe-skip-upgrades`, restore
+signing state, or roll back chain data.
