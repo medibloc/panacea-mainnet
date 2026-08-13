@@ -1,4 +1,4 @@
-# Panacea v2.3.0 Mainnet Upgrade
+# Panacea v2.3.0 Upgrade Instructions
 
 This guide covers upgrading a node running v2.2.0 or v2.2.1 on `panacea-3`,
 using either Cosmovisor or a manual restart. The commands assume that the
